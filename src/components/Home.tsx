@@ -9,6 +9,11 @@ export default function Home() {
     const getData = async () =>{
         const res = await axios.get(`https://localhost:44301/api/values?city=${city}`);
         setData(res.data);
+        await axios.post("https://localhost:44301/api/values/history",{
+            "city": city,
+            "info": "info"
+        }).then((e)=>console.log(e)
+        )
     }
     
   return (
@@ -23,7 +28,7 @@ export default function Home() {
                 <label htmlFor="country" className='font-semibold text-gray-600'>Country</label>
                 <input type="text" id='country' className='mt-3 w-[100%] rounded-md h-8 p-2'/>
             </div>
-            <div className='sticky top-[66%] flex justify-end'>
+            <div className='relative top-[43%] flex justify-end'>
                 <button className='bg-blue-600 w-40 p-2 rounded-lg text-white cursor-pointer' onClick={(e)=>{e.preventDefault(),getData()}}>Search</button>
             </div>
         </form>
@@ -34,7 +39,7 @@ export default function Home() {
                         <div className='flex flex-wrap content-center'>
                             <h2 className='text-blue-400 text-xl font-semibold'>{data.weather.name}, </h2><h3 className='text-gray-400 text-lg ml-2'>{data.weather.sys.country}</h3>
                         </div>
-                        <div className='bg-gray-300 rounded-full'>
+                        <div className='bg-gray-400 rounded-full'>
                             <img src={`http://openweathermap.org/img/w/${data.weather.weather[0].icon}.png`} />
                         </div>
                     </div>
@@ -57,13 +62,14 @@ export default function Home() {
             </div>  
             {
                 showNews ? 
-                <div className='grid gap-7 w-[40%] mt-8'>
+                <div className='grid gap-7 grid-cols-3 w-[100%] mt-8 border-t-[.1px] border-slate-400 p-4'>
                     {
                         data.news.articles.map((e : any)=>(
                             <div className='p-6 bg-gray-400 rounded-md'>
                                 <div className='header flex justify-between'>
                                     <a href={e.url} target="_blank" className='text-blue-500' style={{textDecoration: "underline"}}><h2>{e.title}</h2></a>
                                 </div>
+                                <h2 className='text-sm text-gray-200'>{e.description}</h2>
                             </div> 
                         ))
                        
