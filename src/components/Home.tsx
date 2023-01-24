@@ -5,15 +5,15 @@ export default function Home() {
     const [data, setData] = useState<any>([]);
     const [city, setCity] = useState<string>("");
     const [showNews, setShow] = useState(false);
+    const [country, setCountry] = useState<string>('');
 
     const getData = async () =>{
-        const res = await axios.get(`https://localhost:44301/api/values?city=${city}`);
+        const res = await axios.get(`https://localhost:44301/api/values?city=${city}&country=${country}`);
         setData(res.data);
         await axios.post("https://localhost:44301/api/values/history",{
             "city": city,
             "info": "info"
-        }).then((e)=>console.log(e)
-        )
+        }).then((e)=>console.log(e))
     }
     
   return (
